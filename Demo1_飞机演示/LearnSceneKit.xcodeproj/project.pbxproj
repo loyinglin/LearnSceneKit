@@ -1,0 +1,582 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FD940C9B21DA09FF00ECADD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940C9A21DA09FF00ECADD9 /* AppDelegate.m */; };
+		FD940C9D21DA09FF00ECADD9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = FD940C9C21DA09FF00ECADD9 /* art.scnassets */; };
+		FD940CA021DA09FF00ECADD9 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940C9F21DA09FF00ECADD9 /* GameViewController.m */; };
+		FD940CA321DA09FF00ECADD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD940CA121DA09FF00ECADD9 /* Main.storyboard */; };
+		FD940CA521DA0A0200ECADD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD940CA421DA0A0200ECADD9 /* Assets.xcassets */; };
+		FD940CA821DA0A0200ECADD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD940CA621DA0A0200ECADD9 /* LaunchScreen.storyboard */; };
+		FD940CAB21DA0A0200ECADD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940CAA21DA0A0200ECADD9 /* main.m */; };
+		FD940CB521DA0A0200ECADD9 /* LearnSceneKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940CB421DA0A0200ECADD9 /* LearnSceneKitTests.m */; };
+		FD940CC021DA0A0200ECADD9 /* LearnSceneKitUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940CBF21DA0A0200ECADD9 /* LearnSceneKitUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FD940CB121DA0A0200ECADD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD940C8E21DA09FF00ECADD9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD940C9521DA09FF00ECADD9;
+			remoteInfo = LearnSceneKit;
+		};
+		FD940CBC21DA0A0200ECADD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD940C8E21DA09FF00ECADD9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD940C9521DA09FF00ECADD9;
+			remoteInfo = LearnSceneKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FD940C9621DA09FF00ECADD9 /* LearnSceneKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnSceneKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD940C9921DA09FF00ECADD9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FD940C9A21DA09FF00ECADD9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FD940C9C21DA09FF00ECADD9 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		FD940C9E21DA09FF00ECADD9 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
+		FD940C9F21DA09FF00ECADD9 /* GameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		FD940CA221DA09FF00ECADD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FD940CA421DA0A0200ECADD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FD940CA721DA0A0200ECADD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FD940CA921DA0A0200ECADD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FD940CAA21DA0A0200ECADD9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FD940CB021DA0A0200ECADD9 /* LearnSceneKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LearnSceneKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD940CB421DA0A0200ECADD9 /* LearnSceneKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LearnSceneKitTests.m; sourceTree = "<group>"; };
+		FD940CB621DA0A0200ECADD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FD940CBB21DA0A0200ECADD9 /* LearnSceneKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LearnSceneKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD940CBF21DA0A0200ECADD9 /* LearnSceneKitUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LearnSceneKitUITests.m; sourceTree = "<group>"; };
+		FD940CC121DA0A0200ECADD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FD940C9321DA09FF00ECADD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD940CAD21DA0A0200ECADD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD940CB821DA0A0200ECADD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FD940C8D21DA09FF00ECADD9 = {
+			isa = PBXGroup;
+			children = (
+				FD940C9821DA09FF00ECADD9 /* LearnSceneKit */,
+				FD940CB321DA0A0200ECADD9 /* LearnSceneKitTests */,
+				FD940CBE21DA0A0200ECADD9 /* LearnSceneKitUITests */,
+				FD940C9721DA09FF00ECADD9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FD940C9721DA09FF00ECADD9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD940C9621DA09FF00ECADD9 /* LearnSceneKit.app */,
+				FD940CB021DA0A0200ECADD9 /* LearnSceneKitTests.xctest */,
+				FD940CBB21DA0A0200ECADD9 /* LearnSceneKitUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD940C9821DA09FF00ECADD9 /* LearnSceneKit */ = {
+			isa = PBXGroup;
+			children = (
+				FD940C9921DA09FF00ECADD9 /* AppDelegate.h */,
+				FD940C9A21DA09FF00ECADD9 /* AppDelegate.m */,
+				FD940C9C21DA09FF00ECADD9 /* art.scnassets */,
+				FD940C9E21DA09FF00ECADD9 /* GameViewController.h */,
+				FD940C9F21DA09FF00ECADD9 /* GameViewController.m */,
+				FD940CA121DA09FF00ECADD9 /* Main.storyboard */,
+				FD940CA421DA0A0200ECADD9 /* Assets.xcassets */,
+				FD940CA621DA0A0200ECADD9 /* LaunchScreen.storyboard */,
+				FD940CA921DA0A0200ECADD9 /* Info.plist */,
+				FD940CAA21DA0A0200ECADD9 /* main.m */,
+			);
+			path = LearnSceneKit;
+			sourceTree = "<group>";
+		};
+		FD940CB321DA0A0200ECADD9 /* LearnSceneKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				FD940CB421DA0A0200ECADD9 /* LearnSceneKitTests.m */,
+				FD940CB621DA0A0200ECADD9 /* Info.plist */,
+			);
+			path = LearnSceneKitTests;
+			sourceTree = "<group>";
+		};
+		FD940CBE21DA0A0200ECADD9 /* LearnSceneKitUITests */ = {
+			isa = PBXGroup;
+			children = (
+				FD940CBF21DA0A0200ECADD9 /* LearnSceneKitUITests.m */,
+				FD940CC121DA0A0200ECADD9 /* Info.plist */,
+			);
+			path = LearnSceneKitUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FD940C9521DA09FF00ECADD9 /* LearnSceneKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD940CC421DA0A0200ECADD9 /* Build configuration list for PBXNativeTarget "LearnSceneKit" */;
+			buildPhases = (
+				FD940C9221DA09FF00ECADD9 /* Sources */,
+				FD940C9321DA09FF00ECADD9 /* Frameworks */,
+				FD940C9421DA09FF00ECADD9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LearnSceneKit;
+			productName = LearnSceneKit;
+			productReference = FD940C9621DA09FF00ECADD9 /* LearnSceneKit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FD940CAF21DA0A0200ECADD9 /* LearnSceneKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD940CC721DA0A0200ECADD9 /* Build configuration list for PBXNativeTarget "LearnSceneKitTests" */;
+			buildPhases = (
+				FD940CAC21DA0A0200ECADD9 /* Sources */,
+				FD940CAD21DA0A0200ECADD9 /* Frameworks */,
+				FD940CAE21DA0A0200ECADD9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD940CB221DA0A0200ECADD9 /* PBXTargetDependency */,
+			);
+			name = LearnSceneKitTests;
+			productName = LearnSceneKitTests;
+			productReference = FD940CB021DA0A0200ECADD9 /* LearnSceneKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FD940CBA21DA0A0200ECADD9 /* LearnSceneKitUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD940CCA21DA0A0200ECADD9 /* Build configuration list for PBXNativeTarget "LearnSceneKitUITests" */;
+			buildPhases = (
+				FD940CB721DA0A0200ECADD9 /* Sources */,
+				FD940CB821DA0A0200ECADD9 /* Frameworks */,
+				FD940CB921DA0A0200ECADD9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD940CBD21DA0A0200ECADD9 /* PBXTargetDependency */,
+			);
+			name = LearnSceneKitUITests;
+			productName = LearnSceneKitUITests;
+			productReference = FD940CBB21DA0A0200ECADD9 /* LearnSceneKitUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FD940C8E21DA09FF00ECADD9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = ByteDance;
+				TargetAttributes = {
+					FD940C9521DA09FF00ECADD9 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					FD940CAF21DA0A0200ECADD9 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = FD940C9521DA09FF00ECADD9;
+					};
+					FD940CBA21DA0A0200ECADD9 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = FD940C9521DA09FF00ECADD9;
+					};
+				};
+			};
+			buildConfigurationList = FD940C9121DA09FF00ECADD9 /* Build configuration list for PBXProject "LearnSceneKit" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FD940C8D21DA09FF00ECADD9;
+			productRefGroup = FD940C9721DA09FF00ECADD9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FD940C9521DA09FF00ECADD9 /* LearnSceneKit */,
+				FD940CAF21DA0A0200ECADD9 /* LearnSceneKitTests */,
+				FD940CBA21DA0A0200ECADD9 /* LearnSceneKitUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FD940C9421DA09FF00ECADD9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD940C9D21DA09FF00ECADD9 /* art.scnassets in Resources */,
+				FD940CA821DA0A0200ECADD9 /* LaunchScreen.storyboard in Resources */,
+				FD940CA521DA0A0200ECADD9 /* Assets.xcassets in Resources */,
+				FD940CA321DA09FF00ECADD9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD940CAE21DA0A0200ECADD9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD940CB921DA0A0200ECADD9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FD940C9221DA09FF00ECADD9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD940CA021DA09FF00ECADD9 /* GameViewController.m in Sources */,
+				FD940CAB21DA0A0200ECADD9 /* main.m in Sources */,
+				FD940C9B21DA09FF00ECADD9 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD940CAC21DA0A0200ECADD9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD940CB521DA0A0200ECADD9 /* LearnSceneKitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD940CB721DA0A0200ECADD9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD940CC021DA0A0200ECADD9 /* LearnSceneKitUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD940CB221DA0A0200ECADD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD940C9521DA09FF00ECADD9 /* LearnSceneKit */;
+			targetProxy = FD940CB121DA0A0200ECADD9 /* PBXContainerItemProxy */;
+		};
+		FD940CBD21DA0A0200ECADD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD940C9521DA09FF00ECADD9 /* LearnSceneKit */;
+			targetProxy = FD940CBC21DA0A0200ECADD9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FD940CA121DA09FF00ECADD9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FD940CA221DA09FF00ECADD9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FD940CA621DA0A0200ECADD9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FD940CA721DA0A0200ECADD9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FD940CC221DA0A0200ECADD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		FD940CC321DA0A0200ECADD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FD940CC521DA0A0200ECADD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = LearnSceneKit/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ByteDance.LearnSceneKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FD940CC621DA0A0200ECADD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = LearnSceneKit/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ByteDance.LearnSceneKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FD940CC821DA0A0200ECADD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = LearnSceneKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ByteDance.LearnSceneKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LearnSceneKit.app/LearnSceneKit";
+			};
+			name = Debug;
+		};
+		FD940CC921DA0A0200ECADD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = LearnSceneKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ByteDance.LearnSceneKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LearnSceneKit.app/LearnSceneKit";
+			};
+			name = Release;
+		};
+		FD940CCB21DA0A0200ECADD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = LearnSceneKitUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ByteDance.LearnSceneKitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LearnSceneKit;
+			};
+			name = Debug;
+		};
+		FD940CCC21DA0A0200ECADD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = LearnSceneKitUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ByteDance.LearnSceneKitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LearnSceneKit;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FD940C9121DA09FF00ECADD9 /* Build configuration list for PBXProject "LearnSceneKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD940CC221DA0A0200ECADD9 /* Debug */,
+				FD940CC321DA0A0200ECADD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD940CC421DA0A0200ECADD9 /* Build configuration list for PBXNativeTarget "LearnSceneKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD940CC521DA0A0200ECADD9 /* Debug */,
+				FD940CC621DA0A0200ECADD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD940CC721DA0A0200ECADD9 /* Build configuration list for PBXNativeTarget "LearnSceneKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD940CC821DA0A0200ECADD9 /* Debug */,
+				FD940CC921DA0A0200ECADD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD940CCA21DA0A0200ECADD9 /* Build configuration list for PBXNativeTarget "LearnSceneKitUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD940CCB21DA0A0200ECADD9 /* Debug */,
+				FD940CCC21DA0A0200ECADD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FD940C8E21DA09FF00ECADD9 /* Project object */;
+}
