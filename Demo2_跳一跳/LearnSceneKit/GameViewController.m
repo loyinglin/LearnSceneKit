@@ -7,32 +7,37 @@
 //
 
 #import "GameViewController.h"
+#import "UIView+LYLayout.h"
 
-static const double kMaxPressDuration = 2.f;
-static const int kMaxPlatformRadius = 6;
-static const int kMinPlatformRadius = kMaxPlatformRadius-4;
-static const double kGravityValue = 30;
+#define kMaxPressDuration 2.5
+#define kMaxPlatformRadius 5
+#define kMinPlatformRadius 3
+#define kGravityValue 50
 
-typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
-    CollisionDetectionMaskNone = 0,
-    CollisionDetectionMaskFloor = 1 << 0,
-    CollisionDetectionMaskPlatform = 1 << 1,
-    CollisionDetectionMaskJumper = 1 << 2,
-    CollisionDetectionMaskOldPlatform = 1 << 3,
+typedef NS_ENUM(NSUInteger, LYRoleTypeMask) {
+    LYRoleTypeMaskNone = 0,
+    LYRoleTypeMaskFloor = 1 << 0,
+    LYRoleTypeMaskPlatform = 1 << 1,
+    LYRoleTypeMaskJumper = 1 << 2,
+    LYRoleTypeMaskOldPlatform = 1 << 3,
 };
 
-@interface GameViewController ()<SCNPhysicsContactDelegate>
-@property (strong, nonatomic) IBOutlet UIControl *infoView;
-@property (strong, nonatomic) IBOutlet UILabel *scoreLabel;
-- (IBAction)restart;
+typedef NS_ENUM(NSUInteger, LYGameStatus) {
+    LYGameStatusReady,
+    LYGameStatusRunning,
+};
 
-@property(nonatomic, strong) SCNView *scnView;
+@interface GameViewController () <SCNPhysicsContactDelegate>
+@property (strong, nonatomic) IBOutlet UIView *gameContainerView;
+@property (nonatomic, strong) IBOutlet UILabel *gameStatusLabel;
+@property (strong, nonatomic) IBOutlet UILabel *gameScoreLabel;
+
+@property(nonatomic, strong) SCNView *sceneView;
 @property(nonatomic, strong) SCNScene *scene;
 @property(nonatomic, strong) SCNNode *floor;
 @property(nonatomic, strong) SCNNode *lastPlatform, *platform, *nextPlatform;
 @property(nonatomic, strong) SCNNode *jumper;
 @property(nonatomic, strong) SCNNode *camera,*light;
-@property(nonatomic, strong) NSDate *pressDate;
 @property(nonatomic) NSInteger score;
 @end
 
@@ -40,59 +45,69 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if(self.scnView && self.floor && self.jumper) {
-        [self createFirstPlatform];
-    }
+    
+    [self initGame];
 }
 
-#pragma mark 添加第一个台子
-/**
- 初始化第一个台子
- 
- @discussion 第一个台子造型固定，静态，会与小人碰撞，初始化完成后调整镜头位置
- */
--(void)createFirstPlatform {
-    self.platform = [SCNNode node];
-    self.platform.geometry = [SCNCylinder cylinderWithRadius:5 height:2];
-    self.platform.geometry.firstMaterial.diffuse.contents = UIColor.redColor;
 
+#pragma mark - init
+
+#pragma mark - gameLogic
+
+#pragma mark - node
+
+-(void)addFirstPlatform {
+    self.platform = [SCNNode node];
+    self.platform.geometry = [SCNCylinder cylinderWithRadius:5 height:2]; //[SCNBox boxWithWidth:5 height:5 length:5 chamferRadius:2];
+    self.platform.geometry.firstMaterial.diffuse.contents = UIColor.whiteColor;
+    
     SCNPhysicsBody *body = [SCNPhysicsBody staticBody];
     body.restitution = 0;
     body.friction = 1;
     body.damping = 0;
-    body.categoryBitMask = CollisionDetectionMaskPlatform;
-    body.collisionBitMask = CollisionDetectionMaskJumper|CollisionDetectionMaskPlatform|CollisionDetectionMaskOldPlatform;
+    body.categoryBitMask = LYRoleTypeMaskPlatform;
+    body.collisionBitMask = LYRoleTypeMaskJumper;
     self.platform.physicsBody = body;
     
     self.platform.position = SCNVector3Make(0, 1, 0);
     [self.scene.rootNode addChildNode:self.platform];
-    [self moveCameraToCurrentPlatform];
+}
+#pragma mark - ui action
+
+- (IBAction)startGame {
+    [self.view sendSubviewToBack:self.gameContainerView];
+    self.score = 0;
+    [self.sceneView removeFromSuperview];
+    self.sceneView = nil;
+    self.scene = nil;
+    self.floor = nil;
+    self.lastPlatform = nil;
+    self.platform = nil;
+    self.nextPlatform = nil;
+    self.jumper = nil;
+    self.camera = nil;
+    self.light = nil;
+    
+    [self initGame];
 }
 
-#pragma mark 蓄力
-/**
- 长按手势事件
- 
- @discussion 通过长按时间差模拟力量，如果有最大值
- */
+
 -(void)accumulateStrength:(UILongPressGestureRecognizer *)recognizer {
+    static NSDate *startDate;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        _pressDate = [NSDate date];
+        startDate = [NSDate date];
         [self updateStrengthStatus];
     }else if(recognizer.state == UIGestureRecognizerStateEnded) {
-        if (_pressDate) {
-            self.jumper.geometry.firstMaterial.diffuse.contents = UIColor.whiteColor;
-            [self.jumper removeAllActions];
-            NSDate *now = [NSDate date];
-            double pressDate = [_pressDate timeIntervalSince1970];
-            double nowDate = [now timeIntervalSince1970];
-            double power = nowDate - pressDate;
-            power = power>kMaxPressDuration?kMaxPressDuration:power;
-            [self jumpWithPower:power];
-            _pressDate = nil;
-        }
+        NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:startDate];
+        [self jumpWithPower:MIN(timeInterval, kMaxPressDuration)];
     }
 }
+
+#pragma mark - delegate
+
+#pragma mark - private
+
+
 
 /**
  力量显示
@@ -135,6 +150,10 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
     self.lastPlatform = self.platform;
     self.platform = self.nextPlatform;
     [self moveCameraToCurrentPlatform];
+    [self createNextPlatform];
+    
+    self.jumper.geometry.firstMaterial.diffuse.contents = UIColor.whiteColor;
+    [self.jumper removeAllActions];
 }
 
 /**
@@ -148,7 +167,6 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
     position.z += 20;
     SCNAction *move = [SCNAction moveTo:position duration:0.5];
     [self.camera runAction:move];
-    [self createNextPlatform];
 }
 
 /**
@@ -178,9 +196,9 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
             body.friction = 1;
             body.damping = 0;
             body.allowsResting = YES;
-            body.categoryBitMask = CollisionDetectionMaskPlatform;
-            body.collisionBitMask = CollisionDetectionMaskJumper|CollisionDetectionMaskFloor|CollisionDetectionMaskOldPlatform|CollisionDetectionMaskPlatform;
-            body.contactTestBitMask = CollisionDetectionMaskJumper;
+            body.categoryBitMask = LYRoleTypeMaskPlatform;
+            body.collisionBitMask = LYRoleTypeMaskJumper|LYRoleTypeMaskFloor|LYRoleTypeMaskOldPlatform|LYRoleTypeMaskPlatform;
+            body.contactTestBitMask = LYRoleTypeMaskJumper;
             body;
         });
         //随机位置
@@ -206,9 +224,9 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
 
 #pragma mark 游戏结束
 -(void)gameDidOver {
-    NSLog(@"Game Over");
-    [self.view bringSubviewToFront:self.infoView];
-    [self.scoreLabel setText:[NSString stringWithFormat:@"当前分数:%d",(int)self.score]];
+    [self.view bringSubviewToFront:self.gameContainerView];
+    [self.gameScoreLabel setText:[NSString stringWithFormat:@"游戏结束，当前分数:%d",(int)self.score]];
+    [self.gameContainerView removeAllSubviews];
 }
 
 #pragma mark SCNPhysicsContactDelegate
@@ -221,79 +239,83 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
 - (void)physicsWorld:(SCNPhysicsWorld *)world didBeginContact:(SCNPhysicsContact *)contact{
     SCNPhysicsBody *bodyA = contact.nodeA.physicsBody;
     SCNPhysicsBody *bodyB = contact.nodeB.physicsBody;
-    if (bodyA.categoryBitMask==CollisionDetectionMaskJumper) {
-        if (bodyB.categoryBitMask==CollisionDetectionMaskFloor) {
-            bodyB.contactTestBitMask = CollisionDetectionMaskNone;
+    if (bodyA == self.jumper.physicsBody) {
+        NSLog(@"bodyA:jumper");
+    }
+    else if (bodyA == self.floor.physicsBody) {
+        NSLog(@"bodyA:floor");
+    }
+    else if (bodyA == self.platform.physicsBody) {
+        NSLog(@"bodyA:platform");
+    }
+    if (bodyA.categoryBitMask==LYRoleTypeMaskJumper) {
+        if (bodyB.categoryBitMask==LYRoleTypeMaskFloor) {
+            bodyB.contactTestBitMask = LYRoleTypeMaskNone;
             [self performSelectorOnMainThread:@selector(gameDidOver) withObject:nil waitUntilDone:NO];
-        }else if (bodyB.categoryBitMask==CollisionDetectionMaskPlatform) {
-            //这里有个小bug，我在第一次收到碰撞后进行如下配置，按理说不应该收到碰撞回调了。可实际上还是会来。于是我直接将跳过的台子的categoryBitMask改为CollisionDetectionMaskOldPlatform，保证每个台子只会收到一次。上面的掉落又没有这个bug。
-            //bodyB.contactTestBitMask = CollisionDetectionMaskNone;
-            bodyB.categoryBitMask = CollisionDetectionMaskOldPlatform;
+        }else if (bodyB.categoryBitMask==LYRoleTypeMaskPlatform) {
+            //这里有个小bug，我在第一次收到碰撞后进行如下配置，按理说不应该收到碰撞回调了。可实际上还是会来。于是我直接将跳过的台子的categoryBitMask改为LYRoleTypeMaskOldPlatform，保证每个台子只会收到一次。上面的掉落又没有这个bug。
+            //bodyB.contactTestBitMask = LYRoleTypeMaskNone;
+            bodyB.categoryBitMask = LYRoleTypeMaskOldPlatform;
             [self jumpCompleted];
         }
     }
 }
 
-#pragma mark 懒加载
+#pragma mark - gameLogic
+
+- (void)initGame {
+    [self.gameContainerView addSubview:self.sceneView]; // 添加整个世界显示view
+    [self.scene.rootNode addChildNode:self.floor]; // 添加地板
+    [self.scene.rootNode addChildNode:self.jumper]; // 添加小方块
+    
+    [self addFirstPlatform];
+    [self moveCameraToCurrentPlatform];
+    [self createNextPlatform];
+}
+
+#pragma mark - getter
+
 -(SCNScene *)scene {
     if (!_scene) {
-        _scene = ({
-            SCNScene *scene = [SCNScene new];
-            scene.physicsWorld.contactDelegate = self;
-            scene.physicsWorld.gravity = SCNVector3Make(0, -kGravityValue, 0);
-            scene;
-        });
+        _scene = [SCNScene new];
+        _scene.physicsWorld.contactDelegate = self;
+        _scene.physicsWorld.gravity = SCNVector3Make(0, -kGravityValue, 0); // 重力
     }
     return _scene;
 }
 
--(SCNView *)scnView {
-    if (!_scnView) {
-        _scnView = ({
-            SCNView *view = [SCNView new];
-            view.scene = self.scene;
-            view.allowsCameraControl = NO;
-            view.autoenablesDefaultLighting = NO;
-            [self.view addSubview:view];
-            view.translatesAutoresizingMaskIntoConstraints = NO;
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(view)]];
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(view)]];
-            UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(accumulateStrength:)];
-            longPressGesture.minimumPressDuration = 0;
-            view.gestureRecognizers = @[longPressGesture];
-            view;
-        });
+-(SCNView *)sceneView {
+    if (!_sceneView) {
+        _sceneView = [[SCNView alloc] initWithFrame:self.gameContainerView.bounds];
+        _sceneView.scene = self.scene;
+        _sceneView.allowsCameraControl = NO;
+        _sceneView.autoenablesDefaultLighting = NO;
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(accumulateStrength:)];
+        longPressGesture.minimumPressDuration = 0;
+        _sceneView.gestureRecognizers = @[longPressGesture];
     }
-    return _scnView;
+    return _sceneView;
 }
 
-/**
- 创建地板
- 
- @discussion 用于光影效果，与落地判断
- */
 -(SCNNode *)floor {
     if (!_floor) {
-        _floor = ({
-            SCNNode *node = [SCNNode node];
-            node.geometry = ({
-                SCNFloor *floor = [SCNFloor floor];
-                floor.firstMaterial.diffuse.contents = UIColor.whiteColor;
-                floor;
-            });
-            node.physicsBody = ({
-                SCNPhysicsBody *body = [SCNPhysicsBody staticBody];
-                body.restitution = 0;
-                body.friction = 1;
-                body.damping = 0.3;
-                body.categoryBitMask = CollisionDetectionMaskFloor;
-                body.collisionBitMask = CollisionDetectionMaskJumper|CollisionDetectionMaskPlatform|CollisionDetectionMaskOldPlatform;
-                body.contactTestBitMask = CollisionDetectionMaskJumper;
-                body;
-            });
-            [self.scene.rootNode addChildNode:node];
-            node;
-        });
+        _floor = [SCNNode node];
+        
+        // floor
+        SCNFloor *floor = [SCNFloor floor];
+        floor.firstMaterial.diffuse.contents = UIColor.whiteColor;
+        _floor.geometry = floor;
+        
+        // body
+        SCNPhysicsBody *body = [SCNPhysicsBody staticBody];
+        body.restitution = 0;
+        body.friction = 1;
+        body.damping = 0.3;
+        body.categoryBitMask = LYRoleTypeMaskFloor;
+        body.collisionBitMask = LYRoleTypeMaskJumper|LYRoleTypeMaskPlatform|LYRoleTypeMaskOldPlatform;
+        body.contactTestBitMask = LYRoleTypeMaskJumper;
+        
+        _floor.physicsBody = body;
     }
     return _floor;
 }
@@ -305,28 +327,23 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
  */
 -(SCNNode *)jumper {
     if (!_jumper) {
-        _jumper = ({
-            SCNNode *node = [SCNNode node];
-            node.geometry = ({
-                SCNBox *box = [SCNBox boxWithWidth:1 height:1 length:1 chamferRadius:0];
-                box.firstMaterial.diffuse.contents = UIColor.whiteColor;
-                box;
-            });
-            node.physicsBody = ({
-                SCNPhysicsBody *body = [SCNPhysicsBody dynamicBody];
-                body.restitution = 0;
-                body.friction = 1;
-                body.rollingFriction = 1;
-                body.damping = 0.3;
-                body.allowsResting = YES;
-                body.categoryBitMask = CollisionDetectionMaskJumper;
-                body.collisionBitMask = CollisionDetectionMaskPlatform|CollisionDetectionMaskFloor|CollisionDetectionMaskOldPlatform;
-                body;
-            });
-            node.position = SCNVector3Make(0, 12.5, 0);
-            [self.scene.rootNode addChildNode:node];
-            node;
-        });
+        _jumper = [SCNNode node];
+        
+        SCNBox *box = [SCNBox boxWithWidth:1 height:1 length:1 chamferRadius:0];
+        box.firstMaterial.diffuse.contents = UIColor.whiteColor;
+        _jumper.geometry = box;
+        
+        SCNPhysicsBody *body = [SCNPhysicsBody dynamicBody];
+        body.restitution = 0;
+        body.friction = 1;
+        body.rollingFriction = 1;
+        body.damping = 0.3;
+        body.allowsResting = YES;
+        body.categoryBitMask = LYRoleTypeMaskJumper;
+        body.collisionBitMask = LYRoleTypeMaskPlatform|LYRoleTypeMaskFloor|LYRoleTypeMaskOldPlatform;
+        _jumper.physicsBody = body;
+        
+        _jumper.position = SCNVector3Make(0, 12.5, 0);
     }
     return _jumper;
 }
@@ -366,30 +383,6 @@ typedef NS_OPTIONS(NSUInteger, CollisionDetectionMask) {
         });
     }
     return _light;
-}
-
-#pragma mark UI事件
-- (IBAction)restart {
-    [self.view sendSubviewToBack:self.infoView];
-    self.score = 0;
-    [self.scnView removeFromSuperview];
-    self.scnView = nil;
-    self.scene = nil;
-    self.floor = nil;
-    self.lastPlatform = nil;
-    self.platform = nil;
-    self.nextPlatform = nil;
-    self.jumper = nil;
-    self.camera = nil;
-    self.light = nil;
-    if(self.scnView && self.floor && self.jumper) {
-        [self createFirstPlatform];
-    }
-}
-
-#pragma mark 隐藏状态栏
--(BOOL)prefersStatusBarHidden {
-    return YES;
 }
 
 @end

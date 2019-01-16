@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FD940C9B21DA09FF00ECADD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940C9A21DA09FF00ECADD9 /* AppDelegate.m */; };
-		FD940C9D21DA09FF00ECADD9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = FD940C9C21DA09FF00ECADD9 /* art.scnassets */; };
 		FD940CA021DA09FF00ECADD9 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940C9F21DA09FF00ECADD9 /* GameViewController.m */; };
 		FD940CA321DA09FF00ECADD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD940CA121DA09FF00ECADD9 /* Main.storyboard */; };
 		FD940CA521DA0A0200ECADD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD940CA421DA0A0200ECADD9 /* Assets.xcassets */; };
@@ -16,6 +15,7 @@
 		FD940CAB21DA0A0200ECADD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940CAA21DA0A0200ECADD9 /* main.m */; };
 		FD940CB521DA0A0200ECADD9 /* LearnSceneKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940CB421DA0A0200ECADD9 /* LearnSceneKitTests.m */; };
 		FD940CC021DA0A0200ECADD9 /* LearnSceneKitUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD940CBF21DA0A0200ECADD9 /* LearnSceneKitUITests.m */; };
+		FDA1370521EF338A002F669C /* UIView+LYLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA1370421EF338A002F669C /* UIView+LYLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +39,6 @@
 		FD940C9621DA09FF00ECADD9 /* LearnSceneKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnSceneKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD940C9921DA09FF00ECADD9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FD940C9A21DA09FF00ECADD9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		FD940C9C21DA09FF00ECADD9 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		FD940C9E21DA09FF00ECADD9 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		FD940C9F21DA09FF00ECADD9 /* GameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		FD940CA221DA09FF00ECADD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -53,6 +52,8 @@
 		FD940CBB21DA0A0200ECADD9 /* LearnSceneKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LearnSceneKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD940CBF21DA0A0200ECADD9 /* LearnSceneKitUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LearnSceneKitUITests.m; sourceTree = "<group>"; };
 		FD940CC121DA0A0200ECADD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FDA1370321EF338A002F669C /* UIView+LYLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LYLayout.h"; sourceTree = "<group>"; };
+		FDA1370421EF338A002F669C /* UIView+LYLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LYLayout.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,9 +104,10 @@
 		FD940C9821DA09FF00ECADD9 /* LearnSceneKit */ = {
 			isa = PBXGroup;
 			children = (
+				FDA1370321EF338A002F669C /* UIView+LYLayout.h */,
+				FDA1370421EF338A002F669C /* UIView+LYLayout.m */,
 				FD940C9921DA09FF00ECADD9 /* AppDelegate.h */,
 				FD940C9A21DA09FF00ECADD9 /* AppDelegate.m */,
-				FD940C9C21DA09FF00ECADD9 /* art.scnassets */,
 				FD940C9E21DA09FF00ECADD9 /* GameViewController.h */,
 				FD940C9F21DA09FF00ECADD9 /* GameViewController.m */,
 				FD940CA121DA09FF00ECADD9 /* Main.storyboard */,
@@ -238,7 +240,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD940C9D21DA09FF00ECADD9 /* art.scnassets in Resources */,
 				FD940CA821DA0A0200ECADD9 /* LaunchScreen.storyboard in Resources */,
 				FD940CA521DA0A0200ECADD9 /* Assets.xcassets in Resources */,
 				FD940CA321DA09FF00ECADD9 /* Main.storyboard in Resources */,
@@ -269,6 +270,7 @@
 				FD940CA021DA09FF00ECADD9 /* GameViewController.m in Sources */,
 				FD940CAB21DA0A0200ECADD9 /* main.m in Sources */,
 				FD940C9B21DA09FF00ECADD9 /* AppDelegate.m in Sources */,
+				FDA1370521EF338A002F669C /* UIView+LYLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +442,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A478ENRUX2;
 				INFOPLIST_FILE = LearnSceneKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -456,6 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A478ENRUX2;
 				INFOPLIST_FILE = LearnSceneKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
