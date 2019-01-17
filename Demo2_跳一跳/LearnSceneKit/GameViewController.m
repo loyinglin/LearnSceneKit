@@ -3,6 +3,7 @@
 //  LearnSceneKit
 //
 //  Created by loyinglin on 2018/12/31.
+//  Reference https://www.jianshu.com/p/37908e6ec7b8
 //  Copyright © 2018 ByteDance. All rights reserved.
 //
 
@@ -10,9 +11,9 @@
 #import "UIView+LYLayout.h"
 
 #define kMaxPressDuration 2.5
-#define kMaxPlatformRadius 5
-#define kMinPlatformRadius 3
-#define kGravityValue 50
+#define kMaxPlatformRadius 8
+#define kMinPlatformRadius 5
+#define kGravityValue (-50)
 
 typedef NS_ENUM(NSUInteger, LYRoleTypeMask) {
     LYRoleTypeMaskNone = 0,
@@ -37,7 +38,7 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
 @property(nonatomic, strong) SCNNode *floor;
 @property(nonatomic, strong) SCNNode *lastPlatform, *platform, *nextPlatform;
 @property(nonatomic, strong) SCNNode *jumper;
-@property(nonatomic, strong) SCNNode *camera,*light;
+@property(nonatomic, strong) SCNNode *camera, *light;
 @property(nonatomic) NSInteger score;
 @end
 
@@ -58,7 +59,7 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
 
 -(void)addFirstPlatform {
     self.platform = [SCNNode node];
-    self.platform.geometry = [SCNCylinder cylinderWithRadius:5 height:2]; //[SCNBox boxWithWidth:5 height:5 length:5 chamferRadius:2];
+    self.platform.geometry = [SCNCylinder cylinderWithRadius:5 height:2];
     self.platform.geometry.firstMaterial.diffuse.contents = UIColor.whiteColor;
     
     SCNPhysicsBody *body = [SCNPhysicsBody staticBody];
@@ -72,6 +73,7 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
     self.platform.position = SCNVector3Make(0, 1, 0);
     [self.scene.rootNode addChildNode:self.platform];
 }
+
 #pragma mark - ui action
 
 - (IBAction)startGame {
@@ -108,43 +110,29 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
 #pragma mark - private
 
 
-
-/**
- 力量显示
- 
- @discussion 这里简单地用颜色表示，力量越大，小人越红
- */
 -(void)updateStrengthStatus {
     SCNAction *action = [SCNAction customActionWithDuration:kMaxPressDuration actionBlock:^(SCNNode * node, CGFloat elapsedTime) {
-        CGFloat percentage = elapsedTime/kMaxPressDuration;
-        self.jumper.geometry.firstMaterial.diffuse.contents = [UIColor colorWithRed:1 green:1-percentage blue:1-percentage alpha:1];
+        CGFloat percentage = elapsedTime / kMaxPressDuration;
+        self.jumper.geometry.firstMaterial.diffuse.contents = [UIColor colorWithRed:1 green:1 - percentage blue:1 - percentage alpha:1];
     }];
     [self.jumper runAction:action];
 }
 
-#pragma mark 发力
-/**
- 根据力量值给小人一个力
- 
- @param power 按的时间0~kMaxPressDuration秒
- @discussion 根据按的时间长短，对小人施加一个力，力由一个向上的力，和平面方向上的力组成，平面方向的力由小人的位置和目标台子的位置计算得出
- */
 -(void)jumpWithPower:(double)power {
     power *= 30;
     SCNVector3 platformPosition = self.nextPlatform.presentationNode.position;
     SCNVector3 jumperPosition = self.jumper.presentationNode.position;
-    double subtractionX = platformPosition.x-jumperPosition.x;
-    double subtractionZ = platformPosition.z-jumperPosition.z;
-    double proportion = fabs(subtractionX/subtractionZ);
+    double subtractionX = platformPosition.x - jumperPosition.x;
+    double subtractionZ = platformPosition.z - jumperPosition.z;
+    double proportion = fabs(subtractionX / subtractionZ);
     double x = sqrt(1 / (pow(proportion, 2) + 1)) * proportion;
     double z = sqrt(1 / (pow(proportion, 2) + 1));
-    x*=subtractionX<0?-1:1;
-    z*=subtractionZ<0?-1:1;
-    SCNVector3 force = SCNVector3Make(x*power, 20, z*power);
+    x *= subtractionX < 0 ? -1 : 1;
+    z *= subtractionZ < 0 ? -1 : 1;
+    SCNVector3 force = SCNVector3Make(x * power, 20, z * power); // 力包括三个方向，高度y固定为20，由jumper和platform的位置算出x、z的朝向；核心是运动速度固定为1
     [self.jumper.physicsBody applyForce:force impulse:YES];
 }
 
-#pragma mark 跳跃会触发的事件
 -(void)jumpCompleted {
     self.score++;
     self.lastPlatform = self.platform;
@@ -154,11 +142,12 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
     
     self.jumper.geometry.firstMaterial.diffuse.contents = UIColor.whiteColor;
     [self.jumper removeAllActions];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.gameScoreLabel setText:[NSString stringWithFormat:@"当前分数:%d",(int)self.score]];
+    });
 }
 
-/**
- 调整镜头以观察小人目前所在台子的位置
- */
 -(void)moveCameraToCurrentPlatform {
     SCNVector3 position = self.platform.presentationNode.position;
     
@@ -169,93 +158,76 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
     [self.camera runAction:move];
 }
 
-/**
- 创建下一个台子
- */
 -(void)createNextPlatform {
-    self.nextPlatform = ({
-        SCNNode *node = [SCNNode node];
-        node.geometry = ({
-            //随机大小
-            int radius = (arc4random() % kMinPlatformRadius) + (kMaxPlatformRadius-kMinPlatformRadius);
-            SCNCylinder *cylinder = [SCNCylinder cylinderWithRadius:radius height:2];
-            //随机颜色
-            cylinder.firstMaterial.diffuse.contents = ({
-                CGFloat r = ((arc4random() % 255)+0.0)/255;
-                CGFloat g = ((arc4random() % 255)+0.0)/255;
-                CGFloat b = ((arc4random() % 255)+0.0)/255;
-                UIColor *color = [UIColor colorWithRed:r green:g blue:b alpha:1];
-                color;
-            });
-            cylinder;
-        });
-        node.physicsBody = ({
-            SCNPhysicsBody *body = [SCNPhysicsBody dynamicBody];
-            //            body.mass = 100;
-            body.restitution = 1;
-            body.friction = 1;
-            body.damping = 0;
-            body.allowsResting = YES;
-            body.categoryBitMask = LYRoleTypeMaskPlatform;
-            body.collisionBitMask = LYRoleTypeMaskJumper|LYRoleTypeMaskFloor|LYRoleTypeMaskOldPlatform|LYRoleTypeMaskPlatform;
-            body.contactTestBitMask = LYRoleTypeMaskJumper;
-            body;
-        });
-        //随机位置
-        node.position = ({
-            SCNVector3 position = self.platform.presentationNode.position;
-            int xDistance = (arc4random() % (kMaxPlatformRadius*3-1))+1;
-            position.z -= ({
-                double lastRadius = ((SCNCylinder *)self.platform.geometry).radius;
-                double radius = ((SCNCylinder *)node.geometry).radius;
-                double maxDistance = sqrt(pow(kMaxPlatformRadius*3, 2)-pow(xDistance, 2));
-                double minDistance = (xDistance>lastRadius+radius)?xDistance:sqrt(pow(lastRadius+radius, 2)-pow(xDistance, 2));
-                double zDistance = (((double) rand() / RAND_MAX) * (maxDistance-minDistance)) + minDistance;
-                zDistance;
-            });
-            position.x -= xDistance;
-            position.y += 5;
-            position;
-        });
-        [self.scene.rootNode addChildNode:node];
-        node;
-    });
+    self.nextPlatform = [SCNNode node];
+    
+    //随机大小
+    int cylinderRadius = (arc4random() % kMinPlatformRadius) + (kMaxPlatformRadius - kMinPlatformRadius) + kMinPlatformRadius / 2.0;
+    SCNCylinder *cylinder = [SCNCylinder cylinderWithRadius:cylinderRadius height:2];
+    //随机颜色
+    CGFloat r = (arc4random() % 255) / 255.0;
+    CGFloat g = (arc4random() % 255) / 255.0;
+    CGFloat b = (arc4random() % 255) / 255.0;
+    cylinder.firstMaterial.diffuse.contents = [UIColor colorWithRed:r green:g blue:b alpha:1];
+    self.nextPlatform.geometry = cylinder;
+
+
+    SCNPhysicsBody *body = [SCNPhysicsBody dynamicBody];
+    body.mass = 100;
+    body.restitution = 1;
+    body.friction = 1;
+    body.damping = 0;
+    body.allowsResting = YES;
+    body.categoryBitMask = LYRoleTypeMaskPlatform;
+    body.collisionBitMask = LYRoleTypeMaskJumper|LYRoleTypeMaskFloor|LYRoleTypeMaskOldPlatform|LYRoleTypeMaskPlatform;
+    body.contactTestBitMask = LYRoleTypeMaskJumper;
+    self.nextPlatform.physicsBody = body;
+    
+    SCNVector3 position = self.platform.presentationNode.position;
+    int xDistance = (arc4random() % ( kMaxPlatformRadius * 3 - 1))+1;
+    
+    double lastRadius = ((SCNCylinder *)self.platform.geometry).radius;
+    double radius = ((SCNCylinder *)self.nextPlatform.geometry).radius;
+    double maxDistance = sqrt(pow(kMaxPlatformRadius *  3, 2)-pow(xDistance, 2));
+    double minDistance = (xDistance>lastRadius+radius)?xDistance:sqrt(pow(lastRadius+radius, 2)-pow(xDistance, 2));
+    double zDistance = (((double) rand() / RAND_MAX) * (maxDistance-minDistance)) + minDistance;
+     
+    position.z -= zDistance;
+    position.x -= xDistance;
+    position.y += 5;
+    //随机位置
+    self.nextPlatform.position = position;
+
+    [self.scene.rootNode addChildNode:self.nextPlatform];
 }
 
-#pragma mark 游戏结束
 -(void)gameDidOver {
-    [self.view bringSubviewToFront:self.gameContainerView];
-    [self.gameScoreLabel setText:[NSString stringWithFormat:@"游戏结束，当前分数:%d",(int)self.score]];
-    [self.gameContainerView removeAllSubviews];
+    UILabel *label = [[UILabel alloc] initWithFrame:self.gameContainerView.bounds];
+    label.textColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];
+    label.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    label.text = @"游戏结束";
+    label.font = [UIFont systemFontOfSize:22];
+    label.textAlignment = NSTextAlignmentCenter;
+    [self.gameContainerView addSubview:label];
+    
+    self.gameContainerView.userInteractionEnabled = NO;
 }
 
 #pragma mark SCNPhysicsContactDelegate
-/**
- 碰撞事件监听
- 
- @discussion 如果是小人与地板碰撞，游戏结束。取消地板对小人的监听。
- 如果是小人与台子碰撞，则跳跃完成，进行状态刷新
- */
+
 - (void)physicsWorld:(SCNPhysicsWorld *)world didBeginContact:(SCNPhysicsContact *)contact{
     SCNPhysicsBody *bodyA = contact.nodeA.physicsBody;
     SCNPhysicsBody *bodyB = contact.nodeB.physicsBody;
-    if (bodyA == self.jumper.physicsBody) {
-        NSLog(@"bodyA:jumper");
-    }
-    else if (bodyA == self.floor.physicsBody) {
-        NSLog(@"bodyA:floor");
-    }
-    else if (bodyA == self.platform.physicsBody) {
-        NSLog(@"bodyA:platform");
-    }
+
     if (bodyA.categoryBitMask==LYRoleTypeMaskJumper) {
         if (bodyB.categoryBitMask==LYRoleTypeMaskFloor) {
             bodyB.contactTestBitMask = LYRoleTypeMaskNone;
-            [self performSelectorOnMainThread:@selector(gameDidOver) withObject:nil waitUntilDone:NO];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self gameDidOver];
+            });
         }else if (bodyB.categoryBitMask==LYRoleTypeMaskPlatform) {
-            //这里有个小bug，我在第一次收到碰撞后进行如下配置，按理说不应该收到碰撞回调了。可实际上还是会来。于是我直接将跳过的台子的categoryBitMask改为LYRoleTypeMaskOldPlatform，保证每个台子只会收到一次。上面的掉落又没有这个bug。
-            //bodyB.contactTestBitMask = LYRoleTypeMaskNone;
-            bodyB.categoryBitMask = LYRoleTypeMaskOldPlatform;
+            bodyB.contactTestBitMask = LYRoleTypeMaskNone;
+//            bodyB.categoryBitMask = LYRoleTypeMaskOldPlatform;
             [self jumpCompleted];
         }
     }
@@ -264,6 +236,9 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
 #pragma mark - gameLogic
 
 - (void)initGame {
+    [self.gameContainerView removeAllSubviews];
+    
+    self.gameContainerView.userInteractionEnabled = YES;
     [self.gameContainerView addSubview:self.sceneView]; // 添加整个世界显示view
     [self.scene.rootNode addChildNode:self.floor]; // 添加地板
     [self.scene.rootNode addChildNode:self.jumper]; // 添加小方块
@@ -271,6 +246,8 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
     [self addFirstPlatform];
     [self moveCameraToCurrentPlatform];
     [self createNextPlatform];
+    
+    [self.gameScoreLabel setText:[NSString stringWithFormat:@"当前分数:%d",(int)self.score]];
 }
 
 #pragma mark - getter
@@ -279,7 +256,7 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
     if (!_scene) {
         _scene = [SCNScene new];
         _scene.physicsWorld.contactDelegate = self;
-        _scene.physicsWorld.gravity = SCNVector3Make(0, -kGravityValue, 0); // 重力
+        _scene.physicsWorld.gravity = SCNVector3Make(0, kGravityValue, 0); // 重力
     }
     return _scene;
 }
@@ -302,7 +279,7 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
         _floor = [SCNNode node];
         
         // floor
-        SCNFloor *floor = [SCNFloor floor];
+        SCNFloor *floor = [SCNFloor floor]; // xz平面的地板
         floor.firstMaterial.diffuse.contents = UIColor.whiteColor;
         _floor.geometry = floor;
         
@@ -312,19 +289,14 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
         body.friction = 1;
         body.damping = 0.3;
         body.categoryBitMask = LYRoleTypeMaskFloor;
-        body.collisionBitMask = LYRoleTypeMaskJumper|LYRoleTypeMaskPlatform|LYRoleTypeMaskOldPlatform;
-        body.contactTestBitMask = LYRoleTypeMaskJumper;
+        body.collisionBitMask = LYRoleTypeMaskJumper | LYRoleTypeMaskPlatform | LYRoleTypeMaskOldPlatform;
+        body.contactTestBitMask = LYRoleTypeMaskJumper; //
         
         _floor.physicsBody = body;
     }
     return _floor;
 }
 
-/**
- 初始化小人
- 
- @discussion 小人是动态物体，自由落体到第一个台子中心，会受重力影响，会与台子和地板碰撞
- */
 -(SCNNode *)jumper {
     if (!_jumper) {
         _jumper = [SCNNode node];
@@ -339,48 +311,35 @@ typedef NS_ENUM(NSUInteger, LYGameStatus) {
         body.rollingFriction = 1;
         body.damping = 0.3;
         body.allowsResting = YES;
-        body.categoryBitMask = LYRoleTypeMaskJumper;
-        body.collisionBitMask = LYRoleTypeMaskPlatform|LYRoleTypeMaskFloor|LYRoleTypeMaskOldPlatform;
+        body.categoryBitMask = LYRoleTypeMaskJumper; // 类别是Jumper
+        body.collisionBitMask = LYRoleTypeMaskPlatform | LYRoleTypeMaskFloor | LYRoleTypeMaskOldPlatform; // 允许和平台 地板碰撞
         _jumper.physicsBody = body;
         
-        _jumper.position = SCNVector3Make(0, 12.5, 0);
+        _jumper.position = SCNVector3Make(0, 12, 0); // y=12，所以有开头自由落地到第一个平台的动作
     }
     return _jumper;
 }
 
-/**
- 初始化相机
- 
- @discussion 光源随相机移动，所以将光源设置成相机的子节点
- */
 -(SCNNode *)camera {
     if (!_camera) {
-        _camera = ({
-            SCNNode *node = [SCNNode node];
-            node.camera = [SCNCamera camera];
-            node.camera.zFar = 200.f;
-            node.camera.zNear = .1f;
-            [self.scene.rootNode addChildNode:node];
-            node.eulerAngles = SCNVector3Make(-0.7, 0.6, 0);
-            node;
-        });
-        [_camera addChildNode:self.light];
+        _camera = [SCNNode node];
+        _camera.camera = [SCNCamera camera];
+        _camera.camera.zFar = 200.f;
+        _camera.camera.zNear = .1f;
+        [self.scene.rootNode addChildNode:_camera];
+        _camera.eulerAngles = SCNVector3Make(-0.7, 0.6, 0); // 光源的朝向
+        
+        [_camera addChildNode:self.light]; // 顺便把光源也加上，为了保证摄像机看到的区域一直有光，把光源和相机关联在一起
     }
     return _camera;
 }
 
 -(SCNNode *)light {
     if (!_light) {
-        _light = ({
-            SCNNode *node = [SCNNode node];
-            node.light = ({
-                SCNLight *light = [SCNLight light];
-                light.color = UIColor.whiteColor;
-                light.type = SCNLightTypeOmni;
-                light;
-            });
-            node;
-        });
+        _light = [SCNNode node];
+        _light.light = [SCNLight light];
+        _light.light.color = UIColor.whiteColor;
+        _light.light.type = SCNLightTypeOmni; // 点光源
     }
     return _light;
 }
